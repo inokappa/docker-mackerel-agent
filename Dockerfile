@@ -1,8 +1,12 @@
 FROM debian:jessie
 
+# add jessie-backports
+RUN echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list.d/sources.list
+
 # setup mackerel-agent
 RUN apt-get update \
-  && apt-get -y install curl sudo ruby docker.io \
+  && apt-get -y -t jessie-backports docker.io \
+  && apt-get -y install curl sudo ruby \
   && curl -fsSL https://mackerel.io/assets/files/scripts/setup-apt.sh | sh \
   && apt-get update \
   && apt-get -y install mackerel-agent mackerel-agent-plugins \
