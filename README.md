@@ -24,5 +24,13 @@ docker build -t your_name/docker-mackerel-agent .
 ### docker run
 
 ```
-docker run -t -d -e "apikey=your_api_key" your_name/docker-mackerel-agent
+docker run \
+  -h `hostname` \
+  --name=mackerel-agent \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /var/lib/mackerel-agent/:/var/lib/mackerel-agent/ \
+  -v /proc/mounts:/host/proc/mounts:ro \
+  -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+  -e 'apikey=${your_api_key}' \
+your_name/docker-mackerel-agent
 ```
